@@ -3,14 +3,14 @@ import 'package:flutter_weather_bg_null_safety/bg/weather_bg.dart';
 import 'package:flutter_weather_bg_null_safety/flutter_weather_bg.dart';
 
 
-class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+class WeatherHome extends StatefulWidget {
+  const WeatherHome({super.key});
 
   @override
-  State<HomePage> createState() => _HomePageState();
+  State<WeatherHome> createState() => _WeatherHomeState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _WeatherHomeState extends State<WeatherHome> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
