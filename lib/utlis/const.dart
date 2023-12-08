@@ -7,3 +7,6 @@ const metric = 'metric';
 const imperial = 'imperial';
 const celsius = 'C';
 const fahrenheit = 'F';
+
+const iconUrlPrefix = 'https://openweathermap.org/img/wn/';
+const iconUrlSuffix = '@2x.png';

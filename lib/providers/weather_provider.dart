@@ -1,9 +1,11 @@
 
+import 'dart:convert';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter_weather_app/model/current_weather.dart';
 import 'package:flutter_weather_app/model/forecast_weather.dart';
 import 'package:flutter_weather_app/utlis/const.dart';
-import 'package:http/http.dart';
+import 'package:http/http.dart' as http;
 
 class  WeatherProvider extends ChangeNotifier{
 
@@ -15,22 +17,48 @@ class  WeatherProvider extends ChangeNotifier{
   double longitude = 90.4074;
   final String baseUrl = 'https://api.openweathermap.org/data/2.5/';
 
-  Future<void> _getCurrentData() async{
 
-    final enUrl = 'weather?lat=$latitude&lon=$longitude&appid=$weatherApiKey%units=$unit';
-    final url = Uri.parse('$baseUrl$enUrl');
-
-    try{
-      final Response response = await get(url,headers: {});
-    } catch (e) {
-
-    }
+  bool get hasDataLoaded => currentWeather != null && forecastWeather != null;
 
 
+  Future<void> getData() async{
+    await _getCurrentData();
+    await _getForecastData();
   }
 
+  Future<void> _getCurrentData() async{
+    final enUrl='weather?lat=$latitude&lon=$longitude&appid=$weatherApiKey&units=$unit';
+    final url = Uri.parse('$baseUrl$enUrl');
+    try{
+      final http.Response response = await http.get(url);
+      final json = jsonDecode(response.body);
+      if(response.statusCode == 200){
+        currentWeather = CurrentWeather.fromJson(json);
+        notifyListeners();
+      }else{
+        print(json['message']);
+      }
+    } catch (e) {
+      print(e.toString());
+    }
+  }
 
-
+  Future<void> _getForecastData() async{
+    final enUrl = 'forecast?lat=$latitude&lon=$longitude&appid=$weatherApiKey';
+    final url = Uri.parse('$baseUrl$enUrl');
+    try{
+      final http.Response response = await http.get(url);
+      final json = jsonDecode(response.body);
+      if(response.statusCode == 200){
+        forecastWeather = ForecastWeather.fromJson(json);
+        notifyListeners();
+      }else{
+        print(json['message']);
+      }
+    } catch (e) {
+      print(e.toString());
+    }
+  }
 }
 
 
