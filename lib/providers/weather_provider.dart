@@ -6,8 +6,14 @@ import 'package:flutter_weather_app/model/forecast_weather.dart';
 import 'package:flutter_weather_app/utlis/const.dart';
 import 'package:flutter_weather_app/utlis/helper_functions.dart';
 import 'package:http/http.dart' as http;
+import 'package:geocoding/geocoding.dart'as geo;
 import 'package:geolocator/geolocator.dart';
 import '../model/new_api_model.dart';
+
+
+enum LocationConversionStatus {
+  success, failed,
+}
 
 
 class  WeatherProvider extends ChangeNotifier{
@@ -22,14 +28,16 @@ class  WeatherProvider extends ChangeNotifier{
   String unitSymbol = celsius;
   final String baseUrl = 'https://api.openweathermap.org/data/2.5/';
 
-
+  bool shouldGetLocationFromCity = false;
   bool get hasDataLoaded => currentWeather != null && forecastWeather != null;
 
 
   Future<void> getData() async{
-    final position = await _determinePosition();
-    latitude = position.latitude;
-    longitude = position.longitude;
+    if(!shouldGetLocationFromCity){
+      final position = await _determinePosition();
+      latitude = position.latitude;
+      longitude = position.longitude;
+    }
     await _getCurrentData();
     await _getForecastData();
   }
@@ -74,6 +82,26 @@ class  WeatherProvider extends ChangeNotifier{
       }
     } catch (e) {
       print(e.toString());
+    }
+  }
+
+
+  Future<LocationConversionStatus> convertCityToLatLog(String city) async {
+    try {
+      final locationList = await geo.locationFromAddress(city);
+      if(locationList.isNotEmpty) {
+        final location = locationList.first;
+        latitude = location.latitude;
+        longitude = location.longitude;
+        shouldGetLocationFromCity = true;
+        getData();
+        return LocationConversionStatus.success;
+      } else {
+        return LocationConversionStatus.failed;
+      }
+    } catch (error) {
+      print(error.toString());
+      return LocationConversionStatus.failed;
     }
   }
 

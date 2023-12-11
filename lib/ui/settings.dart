@@ -35,7 +35,7 @@ class _SettingPageState extends State<SettingPage> {
           SwitchListTile(
             title: const Text('Show Temperature in Fahrenheit',
               style: TextStyle(
-                  color: Colors.black,
+                  color: Colors.white,
                   fontSize: 16,
                   fontWeight: FontWeight.bold),
             ),

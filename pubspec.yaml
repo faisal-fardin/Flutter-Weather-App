@@ -40,10 +40,10 @@ dependencies:
   provider:
   http:
   shared_preferences:
-  geolocator:
   geocoding:
   connectivity_plus:
   flutter_easyloading:
+  geolocator:
   google_fonts:
 
 

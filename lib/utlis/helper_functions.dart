@@ -1,4 +1,5 @@
 
+import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -15,5 +16,9 @@ String getFormattedDateTime( num dt, {String patten = 'MMM dd yyyy'}) =>
  Future<bool> getTempUnitStatus() async{
  final pref = await SharedPreferences.getInstance();
  return pref.getBool('status') ?? false;
-
  }
+
+showMsg(BuildContext context, String msg) =>
+    ScaffoldMessenger
+        .of(context)
+        .showSnackBar(SnackBar(content: Text(msg)));
