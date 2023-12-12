@@ -130,7 +130,7 @@ class _citySearchDelegate extends SearchDelegate<String> {
           query = filteredList[index];
           close(context, query);
         },
-        title: Text(filteredList[index]),
+        title: Text(filteredList[index],style: TextStyle(fontWeight: FontWeight.bold),),
       ),
     );
   }

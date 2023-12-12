@@ -9,7 +9,7 @@ Widget currentWeatherSection(
   return Column(
     children: [
       SizedBox(
-        width: double.infinity,
+
         height: 355,
         child: Column(
           children: [
@@ -20,6 +20,8 @@ Widget currentWeatherSection(
                 borderRadius: BorderRadius.circular(10),
               ),
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
                     '${provider.currentWeather!.name}, ${provider.currentWeather!.sys!.country}',
@@ -49,8 +51,8 @@ Widget currentWeatherSection(
                       ),
                       child: Image.network(
                         '$iconUrlPrefix${provider.currentWeather!.weather![0].icon}$iconUrlSuffix',
-                        width: 70,
-                        height: 70,
+                        width: 50,
+                        height: 50,
                         color: Colors.amber,
                       )),
                   const Spacer(),
